@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charSet="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>elm-webpack-starter</title>
+    <meta name="description" content="Elm Webpack Starter"/>
+    <meta name="author" content="Peter Morawiec"/>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="http://onesky.github.io/ui-mk2/css/app.css">
+  </head>
+  <body>
+    <div id="main"></div>
+    <div id="panel" data-unread="0">
+      <fieldset>
+        <legend>LOGIN AS</legend>
+        <button class="c-btn c-btn--small c-btn--danger" onclick="authenticate()">Project</button>
+        <button class="c-btn c-btn--small c-btn--success" onclick="window.comm.logout()">Logout</button>
+        <button class="c-btn c-btn--small c-btn--success" onclick="window.comm.show()">Show Panel</button>
+        <button class="c-btn c-btn--small c-btn--success" onclick="window.comm.hide()">Close Panel</button>
+      </fieldset>
+    </div>
+    <script>
+      var appKey = 'jme9kh62ecag';
+      var appId = 'jme9kh62ecag';
+      var userId = 'userId1';
+      var authTokenUrl = 'http://localhost:5000/auth';
+      function authenticate() {
+        window.cwpNotification.controller.authenticate({
+          appKey: appKey,
+          appId: appId,
+          userId: userId,
+          authTokenUrl: authTokenUrl
+        });
+      }
+    </script>
+  </body>
+</html>
