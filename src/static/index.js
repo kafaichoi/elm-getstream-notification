@@ -19,7 +19,7 @@ cwpNotification.controller = {
       .then(({ token }) => {
         client = stream.connect(appKey, null, appId);
         notificationFeed = client.feed('notification', userId, token);
-
+        loadMoreNotifications();
         notificationFeed
           .subscribe(result => {
             loadMoreNotifications();
@@ -31,6 +31,12 @@ cwpNotification.controller = {
           })
 
       });
+  },
+  hide() {
+    cwpNotification.ports.setVisibility.send(false);
+  },
+  show() {
+    cwpNotification.ports.setVisibility.send(true);
   }
 };
 

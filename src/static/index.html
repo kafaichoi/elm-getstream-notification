@@ -12,11 +12,10 @@
   <body>
     <div id="panel" data-unread="0" style="position: absolute; bottom: 0; z-index: 10000">
       <fieldset>
-        <legend>LOGIN AS</legend>
-        <button class="c-btn c-btn--small c-btn--danger" onclick="authenticate()">Project</button>
-        <button class="c-btn c-btn--small c-btn--success" onclick="window.comm.logout()">Logout</button>
-        <button class="c-btn c-btn--small c-btn--success" onclick="window.comm.show()">Show Panel</button>
-        <button class="c-btn c-btn--small c-btn--success" onclick="window.comm.hide()">Close Panel</button>
+        <button class="c-btn c-btn--small c-btn--danger" onclick="authenticate()">LOGIN</button>
+        <button class="c-btn c-btn--small c-btn--success" onclick="logout()">Logout</button>
+        <button class="c-btn c-btn--small c-btn--success" onclick="show()">Show Panel</button>
+        <button class="c-btn c-btn--small c-btn--success" onclick="hide()">Close Panel</button>
       </fieldset>
     </div>
     <div id="main"></div>
@@ -32,6 +31,15 @@
           userId: userId,
           authTokenUrl: authTokenUrl
         });
+      }
+      function hide() {
+        window.cwpNotification.controller.hide();
+      }
+      function show() {
+        window.cwpNotification.controller.show();
+      }
+      function logout() {
+        alert('todo');
       }
     </script>
   </body>

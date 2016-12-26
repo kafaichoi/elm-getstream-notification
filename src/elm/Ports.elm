@@ -8,3 +8,4 @@ port notifications : (List NotificationItem.Notification -> msg) -> Sub msg
 
 port markOneNotificationAsSeen : NotificationItem.NotificationId -> Cmd msg
 
+port setVisibility : (Bool -> msg ) -> Sub msg

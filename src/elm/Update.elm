@@ -11,6 +11,8 @@ init =
     {
       notifications = []
     , userId = Nothing
+    , isVisible = False
+    , isShowingAllNotificaions = False
     },
     Cmd.none
   )
@@ -19,6 +21,8 @@ update : Msg -> Model -> (Model, Cmd msg)
 update msg model =
   case msg of
     NoOp -> (model, Cmd.none)
+    SetVisibility isVisible -> ({ model | isVisible = isVisible}, Cmd.none)
+    SetShowAllNotification isShowingAllNotificaions -> ({ model | isShowingAllNotificaions = isShowingAllNotificaions}, Cmd.none)
     LoadMoreNotifications -> (model, Ports.loadMoreNotifications())
     NewNotifications notifications -> ({model | notifications = notifications}, Cmd.none)
     NotificationItemMsg notificationItemMsg ->
@@ -39,5 +43,9 @@ markNotificationAsSeen id notifications =
 -- Subscription
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Ports.notifications (\notifications -> NewNotifications notifications)
+  Sub.batch [
+    Ports.notifications (\notifications -> NewNotifications notifications),
+    Ports.setVisibility (\isVisible -> SetVisibility isVisible)
+  ]
+  
 
