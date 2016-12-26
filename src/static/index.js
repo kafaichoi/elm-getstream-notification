@@ -37,4 +37,9 @@ cwpNotification.ports.loadMoreNotifications.subscribe(() => {
       )
     })
     .catch(reason => { console.error(reason); });
-})
+});
+
+cwpNotification.ports.markOneNotificationAsSeen.subscribe((notificationid) => {
+  notificationFeed
+    .get({ mark_seen: [notificationid] });
+});

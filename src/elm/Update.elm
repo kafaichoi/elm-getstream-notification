@@ -2,8 +2,8 @@ module Update exposing (init, update, subscriptions)
 
 import Model exposing (..)
 import Ports
-import Components.NotificationItem.Update as NotificationItem
 import Components.NotificationItem.Model as NotificationItemModel
+import GetStream
 
 init : (Model, Cmd Msg)
 init =
@@ -21,8 +21,9 @@ update msg model =
     NoOp -> (model, Cmd.none)
     LoadMoreNotifications -> (model, Ports.loadMoreNotifications())
     NewNotifications notifications -> ({model | notifications = notifications |> List.map(NotificationItemModel.Model)}, Cmd.none)
-    _ -> (model, Cmd.none)
-    -- NotificationItemMsg id -> NotificationItem.update id
+    NotificationItemMsg notificationItemMsg ->
+      case notificationItemMsg of
+        NotificationItemModel.MarkAsSeen notificationItemId -> (model, GetStream.markOneNotificationAsSeen(notificationItemId))
 
 -- Subscription
 subscriptions : Model -> Sub Msg

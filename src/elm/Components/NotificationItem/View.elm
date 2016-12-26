@@ -4,7 +4,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Components.NotificationItem.Model exposing (..)
-import Components.NotificationItem.Update exposing (..)
 
 view : Model -> Html Msg
 view model =
