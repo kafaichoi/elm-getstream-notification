@@ -1,12 +1,12 @@
 {
-  "name": "elm-webpack-starter",
-  "description": "Webpack setup for writing Elm apps",
-  "version": "0.8.2",
+  "name": "elm-getstream-notification",
+  "description": "GetStream Notification with elm",
+  "version": "0.0.0",
   "license": "MIT",
-  "author": "Peter Morawiec",
+  "author": "KaFa Choi",
   "repository": {
     "type": "git",
-    "url": "https://github.com/moarwick/elm-webpack-starter"
+    "url": "https://github.com/swtpain/elm-getstream-notification"
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline --content-base src/",

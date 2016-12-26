@@ -3,6 +3,7 @@ port module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing ( onClick )
+import Components.NotificationItem as NotificationItem
 
 -- APP
 main : Program Never Model Msg
@@ -17,21 +18,13 @@ main =
 
 port loadMoreNotifications : () -> Cmd msg
 
-port notifications : (List Notification -> msg) -> Sub msg
+port notifications : (List NotificationItem.Notification -> msg) -> Sub msg
 
 -- MODEL
 type alias Model =
   {
-    notifications : List Notification
+    notifications : List NotificationItem.Notification
   , userId: Maybe String
-  }
-
-type alias Notification =
-  {
-    id: String
-  , isSeen: Bool
-  , isRead: Bool
-  , message: String
   }
 
 init : (Model, Cmd Msg)
@@ -57,7 +50,7 @@ model = 0
 -- UPDATE
 type Msg = NoOp
          | LoadMoreNotifications
-         | NewNotifications (List Notification)
+         | NewNotifications (List NotificationItem.Notification)
 
 update : Msg -> Model -> (Model, Cmd msg)
 update msg model =
@@ -77,17 +70,30 @@ subscriptions model =
 -- CSS can be applied via class names or inline style attrib
 view : Model -> Html Msg
 view model =
-  div [ class "container", style [("margin-top", "30px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
-    div [ class "row" ][
-      div [ class "col-xs-12" ][
-        div [ class "jumbotron" ] (List.map (\noti -> span [] [text noti.message]) model.notifications),
-        div [ class "jumbotron" ] [
-          button [onClick LoadMoreNotifications] [text "yooo"]
+  div [ class "c-inbox js-close-inbox-with-bg-tint" ]
+    [ div [ class "o-container u-background-white u-padding-normal u-box-shadow-heavy u-border-radius-rounded" ]
+      [ div [ class "o-row u-padding-bottom-large" ]
+        [ div [ class "o-col-xs-6" ]
+          [ div [ class "c-btn-group" ]
+            [ button [ class "c-btn c-btn--medium c-btn--mute"]
+              [ text "All" ]
+            , button [ class "c-btn c-btn--medium c-btn--mute is-active"]
+              [ text "Unread "
+              , span [ class "c-badge c-badge--small c-badge--plain" ]
+                [ text "20" ]
+              ]
+            ]
+          ]
+        , div [ class "o-col-xs-6 u-type-align-right" ]
+          [ button [ class "c-btn c-btn--medium c-btn--mute c-btn--mute--to-info" ]
+            [ text "Mark all as read" ]
+          ]
         ]
+        , ol [ class "u-unstyle c-feed c-feed--line u-display-block"]
+          (List.map (\noti -> NotificationItem.view noti) model.notifications)
+        , div [ class "jumbotron" ] [ button [onClick LoadMoreNotifications] [text "load more"]]
       ]
     ]
-  ]
-
 
 -- CSS STYLES
 styles : { img : List ( String, String ) }
