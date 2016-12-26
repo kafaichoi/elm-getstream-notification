@@ -3,3 +3,4 @@ repl-temp-*
 node_modules/
 tmp/
 dist/
+npm-debug.log

@@ -19,27 +19,44 @@ cwpNotification.controller = {
       .then(({ token }) => {
         client = stream.connect(appKey, null, appId);
         notificationFeed = client.feed('notification', userId, token);
+
+        notificationFeed
+          .subscribe(result => {
+            loadMoreNotifications();
+            // if (result.new.length > 0) {
+            //   loadMoreNotifications();
+            // }
+            // if (result.deleted.length > 0) {
+            // }
+          })
+
       });
   }
 };
 
-
-cwpNotification.ports.loadMoreNotifications.subscribe(() => {
-  notificationFeed.get({ limit:10 })
+const loadMoreNotifications = () => {
+  notificationFeed.get({ limit: 100 })
     .then(({ results }) => {
+      console.log('results', results);
       cwpNotification.ports.notifications.send(
-        results.map(r => ({
-          id: r.activities[0].id,
-          message: r.activities[0].message,
-          isSeen: r.is_seen,
-          isRead: r.is_read,
-        }))
+        results.map(notificationResultToNotification)
       )
     })
-    .catch(reason => { console.error(reason); });
+    .catch(reason => { console.error(reason); });    
+}
+
+cwpNotification.ports.loadMoreNotifications.subscribe(loadMoreNotifications);
+
+const notificationResultToNotification = result => ({
+  id: result.activities[0].id,
+  message: result.activities[0].message,
+  isSeen: result.is_seen,
+  isRead: result.is_read,  
 });
 
-cwpNotification.ports.markOneNotificationAsSeen.subscribe((notificationid) => {
+cwpNotification.ports.markOneNotificationAsSeen.subscribe(notificationId => {
   notificationFeed
-    .get({ mark_seen: [notificationid] });
+    .get({ mark_seen: [notificationId] })
+    .then(loadMoreNotifications)
+    .catch(reason => { console.error(reason); });
 });

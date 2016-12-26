@@ -20,11 +20,22 @@ update msg model =
   case msg of
     NoOp -> (model, Cmd.none)
     LoadMoreNotifications -> (model, Ports.loadMoreNotifications())
-    NewNotifications notifications -> ({model | notifications = notifications |> List.map(NotificationItemModel.Model)}, Cmd.none)
+    NewNotifications notifications -> ({model | notifications = notifications}, Cmd.none)
     NotificationItemMsg notificationItemMsg ->
       case notificationItemMsg of
-        NotificationItemModel.MarkAsSeen notificationItemId -> (model, GetStream.markOneNotificationAsSeen(notificationItemId))
+        NotificationItemModel.MarkAsSeen notificationItemId ->
+          ({model | notifications = (model.notifications |> markNotificationAsSeen(notificationItemId))}, GetStream.markOneNotificationAsSeen(notificationItemId))
 
+markNotificationAsSeen : NotificationItemModel.NotificationId -> List NotificationItemModel.Notification ->  List NotificationItemModel.Notification
+markNotificationAsSeen id notifications =
+  let
+    updateNotificartion noti =
+      if noti.id == id then
+        {noti | isSeen = True}
+      else
+        noti
+  in    
+    List.map updateNotificartion notifications
 -- Subscription
 subscriptions : Model -> Sub Msg
 subscriptions model =

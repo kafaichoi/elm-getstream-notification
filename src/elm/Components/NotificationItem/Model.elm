@@ -9,10 +9,7 @@ type alias Notification =
   , message: String
   }
 
-type alias Model =
-  {
-    notification: Notification
-  }
+type alias Model = Notification
 
 type Msg =
   MarkAsSeen NotificationId

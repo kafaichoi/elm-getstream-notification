@@ -8,9 +8,9 @@ import Components.NotificationItem.Model exposing (..)
 view : Model -> Html Msg
 view model =
   let
-    containerClass = if model.notification.isSeen then "c-feed-item" else "c-feed-item u-highlight-info"
+    containerClass = if model.isSeen then "c-feed-item" else "c-feed-item u-highlight-info"
   in 
-    li [ class containerClass, onClick(MarkAsSeen model.notification.id) ]
+    li [ class containerClass, onClick(MarkAsSeen model.id) ]
       [
         a [ class "c-feed-item-link o-media-block u-padding-small" ]
           [
@@ -18,7 +18,7 @@ view model =
           , div [ class "o-media-block-body" ]
             [
               span [ class "u-type-small u-margin-bottom-x-small u-display-block"]
-                [ text model.notification.message]
+                [ text model.message]
             , span [ class "u-type-hint u-type-mute u-type-small"]
               [ text "9:00am (a moment ago)"]
             ]
